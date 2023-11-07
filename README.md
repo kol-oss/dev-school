@@ -1,6 +1,8 @@
 # Dev-school
 
----
+<p align="center">
+  <img src="https://github.com/kol-oss/dev-school/assets/62239358/9aca7b89-3cbe-4040-a4b3-f81093d882f4" alt="Dev-school"/>
+</p>
 
 This repository is created for the school organized by the **Dev-department** of SC FICE.
 
@@ -17,8 +19,6 @@ The program covers a wide range of topics, including programming fundamentals, a
 * **Bots:** Python, Aiogram, FastAPI.
 
 # Author
-
----
 
 All homeworks were made by **Khozhainov Mykola** <[kolyakhozhajinov@gmail.com]()>.
 
@@ -39,8 +39,6 @@ You can connect with me on social media platforms:
 
 # Setup
 
----
-
 > All homeworks done on **JavaScript**.
 
 To get started, clone this repository to your local machine:
@@ -48,8 +46,6 @@ To get started, clone this repository to your local machine:
    git clone https://github.com/kol-oss/dev-school.git
    ```
 # License
-
----
 
 This repository is available under the [MIT license](https://opensource.org/licenses/MIT).
 
