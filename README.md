@@ -39,12 +39,17 @@ You can connect with me on social media platforms:
 
 # Setup
 
-> All homeworks done on **JavaScript**.
+> All homeworks done on **JavaScript ES12**.
 
 To get started, clone this repository to your local machine:
-   ```shell
-   git clone https://github.com/kol-oss/dev-school.git
-   ```
+```shell
+git clone https://github.com/kol-oss/dev-school.git
+```
+To execute files you must have [NodeJS](https://github.com/nodejs) installed on your computer. Then run next program in terminal:
+```shell
+node homework-1/Ilonovay-2.js
+```
+*Pay attention that some homeworks don't have files as there are no programs included.*
 # License
 
 This repository is available under the [MIT license](https://opensource.org/licenses/MIT).
