@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  firstName     String    @map("first_name")
+  lastName      String    @map("last_name")
+  email         String    @unique
+  bank          Bank?
+
+  organizations UserToOrganization[]
+  candidates    Candidate[]
+  votes         Vote[]
+
+  createdAt     DateTime?  @default(now()) @map("created_at")
+
+  @@map("users")
+}
+
+model Bank {
+  id            String    @id @default(uuid())
+  balance       Int       @default(0)
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String    @unique @map("user_id")
+  updatedAt     DateTime? @updatedAt() @map("updated_at")
+
+  @@map("bank_accounts")
+}
+
+model Organization {
+  id            String     @id @default(uuid())
+  name          String
+  description   String?
+
+  members       UserToOrganization[]
+  createdAt     DateTime?  @default(now()) @map("created_at")
+
+  @@map("organizations")
+}
+
+enum RoleInOrganization {
+  member
+  admin
+  owner
+
+  @@map("roles_in_organizations")
+}
+
+model UserToOrganization {
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String       @map("user_id")
+
+  organization  Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String      @map("organizaton_id")
+
+  role          RoleInOrganization @default(member)
+
+  @@id([userId, organizationId])
+  @@map("users_in_organizations")
+}
+
+model Poll {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  anonymous     Boolean   @default(true) @map("is_anonymous")
+
+  candidates    Candidate[]
+
+  startAt       DateTime  @map("start_at")
+  endAt         DateTime  @map("end_at")
+  @@map("polls")
+}
+
+model Candidate {
+  id            String    @id @default(uuid())
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String    @map("user_id")
+
+  poll          Poll      @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  pollId        String    @map("poll_id")
+
+  votes         Vote[]
+  @@map("candidates")
+}
+
+model Vote {
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String    @map("user_id")
+
+  candidate     Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  candidateId   String    @map("candidate_id")
+
+  createdAt     DateTime?  @default(now()) @map("created_at")
+
+  @@id([userId, candidateId])
+  @@map("votes")
+}
