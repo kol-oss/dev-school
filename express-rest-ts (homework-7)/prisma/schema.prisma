@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  UNKNOWN
+  STUDY
+  SPORT
+  ELECTRONICS
+
+  @@map("categories")
+}
+
+model Product {
+  id   String @id @default(uuid())
+  name String
+
+  category Category
+  amount   Int      @default(1)
+  price    Int
+
+  orders OrderToProduct[]
+
+  @@map("products")
+}
+
+model Customer {
+  id         String  @id @default(uuid())
+  firstName  String  @map("first_name")
+  lastName   String  @map("last_name")
+  middleName String? @map("middle_name")
+
+  email     String   @unique
+  birthDate DateTime @map("birth_date")
+  orders    Order[]
+
+  @@map("customers")
+}
+
+enum Positions {
+  WORKER
+  MANAGER
+  DIRECTOR
+
+  @@map("positions")
+}
+
+model Employee {
+  id         String  @id @default(uuid())
+  firstName  String  @map("first_name")
+  lastName   String  @map("last_name")
+  middleName String? @map("middle_name")
+
+  position Positions @default(WORKER)
+  Order    Order[]
+
+  @@map("employees")
+}
+
+model Order {
+  id String @id @default(uuid())
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  employeeId String   @map("employee_id")
+
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+
+  orderAddress String   @map("order_address")
+  deliveryCost Int      @map("delivery_cost")
+  orderDate    DateTime @default(now()) @map("order_date")
+
+  products OrderToProduct[]
+
+  @@map("orders")
+}
+
+model OrderToProduct {
+  Order   Order  @relation(fields: [orderId], references: [id])
+  orderId String
+
+  Product   Product @relation(fields: [productId], references: [id])
+  productId String
+
+  @@id([orderId, productId])
+  @@map("orders_to_products")
+}
